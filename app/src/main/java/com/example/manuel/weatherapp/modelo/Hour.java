@@ -53,7 +53,11 @@ public class Hour implements Parcelable{
     }
 
     public double getTemperature() {
-        return (int)Math.round(mTemperature);
+        float tempCelsius;
+        float aux = (float)5/9;
+        tempCelsius = (float) ((mTemperature-32)*aux );
+
+        return (int)(tempCelsius);
     }
 
     public void setTemperature(double temperature) {

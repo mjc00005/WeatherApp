@@ -60,7 +60,11 @@ public class Current {
     }
 
     public int getTemparature() {
-        return (int)Math.round(mTemparature);
+        float tempCelsius;
+        float aux = (float)5/9;
+        tempCelsius = (float) ((mTemparature-32)*aux );
+
+        return (int)Math.round(tempCelsius);
     }
 
     public void setTemparature(double temparature) {

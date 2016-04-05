@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Forecast mForecast;
 
+    //Instantiate the views
     @Bind(R.id.timeLabel) TextView mTimeLabel;
     @Bind(R.id.temperatureLabel) TextView mTemperatureLabel;
     @Bind(R.id.humidityValue) TextView mHuminityLabel;
@@ -61,11 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private static final String[] LOCATION_PERMS = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-
+        //Set the London Location
         final double latitud = 51.468822;
         final double longitud = 0.005464;
 
         mProgressBar.setVisibility(View.INVISIBLE);
 
+        //Press Update Botom
         mIconRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
                 getForecast(latitud, longitud);
             }
         });
+
+        getForecast(latitud, longitud);
 
         Log.e(TAG, "Main UI is running!!!!! ");
 
@@ -97,10 +96,12 @@ public class MainActivity extends AppCompatActivity {
 
         String foreCastURL = "https://api.forecast.io/forecast/" + apiKey + "/" + latitud + "," + longitud;
 
+        //Check if the Network is available
         if (isNetworkAvailable()) {
-
+            //Change the visibility from progress bar
             toggleRefresh();
 
+            //Request the JSON
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(foreCastURL)
@@ -127,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
                             toggleRefresh();
                         }
                     });
-
-
                     try {
                         //Response response = call.execute();
                         String jsonData = response.body().string();
@@ -156,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(MainActivity.this, "No funciona network", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Doesn't work the network", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -273,13 +272,9 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, " From JSON: PRECIPI  " + cWeather.getPrecipiChance());
         Log.i(TAG, " From JSON: HUMIDY  " + cWeather.getHumidity());
 
-
         Log.d(TAG, cWeather.getFormattedDate());
 
-
         return cWeather;
-
-
     }
 
     private boolean isNetworkAvailable() {
